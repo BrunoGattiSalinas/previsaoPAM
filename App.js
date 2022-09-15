@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, Image, ImageBackground, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import { StyleSheet, Image, ImageBackground, Text, View, TextInput, TouchableOpacity, FlatList} from 'react-native';
 import Tempo from './components/Tempo';
 import Api from './components/Api';
 
@@ -10,8 +10,8 @@ export default function App() {
   const [dados, setDados] = useState("");
   const [cidade, setCidade] = useState("");
   async function carregaDados(){
-    const response = await Api.get(`weather?array_limit=2&fields=only_results,temp,city_name,time,forecast,max,min,date,description&key=3d5afcfa&city_name=${cidade}`)
-      setDados(response.data.forecast[0]);
+    const response = await Api.get(`weather?array_limit=2&fields=only_results,temp,city_name,time,forecast,max,min,date,description&key=dd4489da&city_name=${cidade}`)
+      setDados(response.data.forecast);
   }
   
   return (
@@ -40,10 +40,22 @@ export default function App() {
             <Text style={styles.txtBotao}>Buscar</Text>
           </TouchableOpacity>
         </View>
-
-        <View>
+          {/*
           <Tempo data = {dados}/>
+        */}
+        <FlatList
+        data={dados}
+        renderItem={({item})=>{
+          return(
+            <View>
+              <Text>Data: {item.date}</Text>
+              <Text>Min: {item.max}</Text>
+              <Text>Min: {item.min}</Text>
+              <Text>Min: {item.description}</Text>
         </View>
+          );
+        }}
+        />
     </View>
   );
 }
